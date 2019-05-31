@@ -35,7 +35,7 @@ end
 function update_choose_bets(dt)
   if not choosen_game.q then return end
   
-  if btn(5) and not TRANSIT then 
+  if btnp(5) and not TRANSIT then 
     begin_transition_from_to(this,"choose_game")
   end
     
