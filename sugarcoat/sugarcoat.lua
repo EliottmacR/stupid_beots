@@ -8,7 +8,7 @@ if CASTLE_PREFETCH then
     "sugarcoat/gfx_vault.lua",
     "sugarcoat/input.lua",
     "sugarcoat/maths.lua",
-    "sugarcoat/map.lua",
+    --"sugarcoat/map.lua",
     "sugarcoat/sprite.lua",
     "sugarcoat/text.lua",
     "sugarcoat/time.lua",
