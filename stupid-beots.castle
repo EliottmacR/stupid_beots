@@ -1,4 +1,6 @@
 main: main.lua
 title: Stupid_Beots
-owner: SPACELING
+owner: spaceling
+primaryColor: dd66dd
+coverImage: https://raw.githubusercontent.com/EliottmacR/blaze/master/logo-500.png
 
