@@ -14,10 +14,10 @@ function love.load()
   palt(0, false)  
   
 -- bubblegum16 = {
--- 0x16171a, 0x7f0622, 0xd62411, 0xff8426,
--- 0xffd100, 0xfafdff, 0xff80a4, 0xff2674,
--- 0x94216a, 0x430067, 0x234975, 0x68aed4,
--- 0xbfff3c, 0x10d275, 0x007899, 0x002859
+-- 16171a, 7f0622, d62411, ff8426,
+-- ffd100, fafdff, ff80a4, ff2674,
+-- 94216a, 430067, 234975, 68aed4,
+-- bfff3c, 10d275, 007899, 002859
 -- }
   
   

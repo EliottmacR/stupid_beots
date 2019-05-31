@@ -1,4 +1,4 @@
-function very_cool_print(str, x, y, hspd, vspd)
+function very_cool_print(str, x, y, hspd, vspd, inner_col, outer_col)
   if not str or not x or not y then return end
   
   local w = str_px_width(str)
@@ -6,17 +6,18 @@ function very_cool_print(str, x, y, hspd, vspd)
   local x = x - w / 2
   local hspd = hspd or 15 
   local vspd = vspd or 15
-  
+  local inner_col = inner_col or 1
+  local outer_col = outer_col or 5
   
   for i = 1, #str do
     local c = str:sub(i,i)
-    cool_print(c, x + w *(i-1)/#str+ cos(i / #str + t() / 2) * hspd + 10, y + sin(i / #str + t() / 2) * vspd - h/2 + 10, 0, 0)
-    cool_print(c, x + w *(i-1)/#str+ cos(i / #str + t() / 2) * hspd     , y + sin(i / #str + t() / 2) * vspd - h/2)
+    cool_print(c, x + w *(i-1)/#str+ cos(i / #str + t() / 2) * hspd + 6 , y + sin(i / #str + t() / 2) * vspd - h/2 + 6, 0, 0)
+    cool_print(c, x + w *(i-1)/#str+ cos(i / #str + t() / 2) * hspd     , y + sin(i / #str + t() / 2) * vspd - h/2, inner_col, outer_col)
   end
 
 end
 
-function lesser_cool_print(str, x, y,spd)
+function lesser_cool_print(str, x, y,spd, c1, c2)
   if not str or not x or not y then return end
   
   local w = str_px_width(str)
@@ -27,7 +28,7 @@ function lesser_cool_print(str, x, y,spd)
   for i = 1, #str do
     local c = str:sub(i,i)
     cool_print(c, x + w *(i-1)/#str , y + sin(i / #str + t() / 2) * spd + 10 - h/2, 0, 0)
-    cool_print(c, x + w *(i-1)/#str , y + sin(i / #str + t() / 2) * spd - h/2)
+    cool_print(c, x + w *(i-1)/#str , y + sin(i / #str + t() / 2) * spd - h/2, c1, c2)
   end
 
 end
@@ -53,6 +54,13 @@ function cool_print(str, x, y, inner_col, outer_col)
   
   color(outer_col)
   print(str, x, y)
+
+end
+
+function shaded_cool_print(str, x1, y1, inner_col, outer_col, d)
+  local d = d or 5
+  cool_print(str, x1 + d, y1 + d, 0, 0)
+  cool_print(str, x1, y1, inner_col, outer_col)
 
 end
 

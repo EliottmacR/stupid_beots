@@ -1,16 +1,20 @@
+require("screens/generic_screen")
 require("screens/background")
 require("screens/title_screen")
-require("screens/main_menu")
-require("screens/generic_screen")
+require("screens/choose_game")
+require("screens/choose_bets")
+require("screens/sb_game")
+require("screens/display_results")
 
 screen_controller = {layer = { {} } }
 transitioning = {}
 begin_t_time = nil
+TRANSIT = false
 
 function init_screens()
   init_background(0)
-  init_title_screen(1)
-  -- init_main_menu(1)
+  -- init_title_screen(1)
+  init_choose_game(1)
 end
 
 function init_screen(name, update, draw, background_clr, x, y, w, h, z)
@@ -42,8 +46,10 @@ function init_screen(name, update, draw, background_clr, x, y, w, h, z)
 end
 
 function update_screens(dt)
-
+  TRANSIT = false
+  local x_between_screens = 150
   if count(transitioning) > 1 then 
+    TRANSIT = true
     local x = (t()-begin_t_time) / 2
     
     if transitioning[3] == "to_left" then
@@ -52,15 +58,15 @@ function update_screens(dt)
       local right_screen = transitioning[1]
       
       if left_screen then
-        left_screen.x = lerp(-GW, 0, x)
+        left_screen.x = lerp(-GW - x_between_screens, 0, x)
         if left_screen.x >= 0 then 
           left_screen.x = 0
           transitioning[2] = nil
         end
       end      
       if right_screen then
-        right_screen.x = lerp(0, GW, x)
-        if right_screen.x >= GW then 
+        right_screen.x = lerp(0, GW + x_between_screens, x)
+        if right_screen.x >= GW + x_between_screens then 
           remove_screen(transitioning[1])
           transitioning[1] = nil
         end
@@ -72,16 +78,16 @@ function update_screens(dt)
       local right_screen = transitioning[2]
     
       if left_screen then
-        left_screen.x = lerp(0, -GW, x)
-        if left_screen.x <= -GW then 
-          left_screen.x = -GW 
+        left_screen.x = lerp(0, -GW - x_between_screens, x)
+        if left_screen.x <= -GW - x_between_screens then 
+          left_screen.x = -GW - x_between_screens
           remove_screen(transitioning[1])
           transitioning[1] = nil
         end
       end
       
       if right_screen then
-        right_screen.x = lerp(GW, 0, x)
+        right_screen.x = lerp(GW + x_between_screens, 0, x)
         if right_screen.x <= 0 then 
           right_screen.x = 0 
           transitioning[2] = nil
@@ -141,26 +147,40 @@ end
 function get_tree_values()
   return {
     title_screen = 1,
-    main_menu = 2
+    choose_game = 2,
+    choose_bets = 3,
+    sb_game = 4,
+    display_results = 5
   }
 end
 
 function begin_transition_from_to(screen, name)
-  if not screen then return end
-  
+
+  if not screen or TRANSIT then log("im out") return end
   transitioning = {}
+  TRANSIT = true
   local tree_values = get_tree_values()
   
   transitioning[1] = screen
   
+  
   if name == "title_screen" then
     transitioning[2] = init_title_screen(screen.z)
-  elseif name == "main_menu" then  
-    transitioning[2] = init_main_menu(screen.z)   
+  elseif name == "choose_game" then  
+    transitioning[2] = init_choose_game(screen.z)   
+  elseif name == "choose_bets" then  
+    transitioning[2] = init_choose_bets(screen.z)   
+  elseif name == "sb_game" then  
+    transitioning[2] = init_sb_game(screen.z)   
+  elseif name == "display_results" then  
+    transitioning[2] = init_display_results(screen.z)   
   end
   
   transitioning[3] = (tree_values[screen.name] < tree_values[name]) and "to_right" or "to_left"
   
   transitioning[2].x = GW * (transitioning[3] == "to_left" and -1 or 1)
   begin_t_time = t()
+  
+  if transitioning[2] then return transitioning[2] end 
+  
 end

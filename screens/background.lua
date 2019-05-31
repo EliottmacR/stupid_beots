@@ -4,12 +4,15 @@ local this
 local sw
 local sh
 
+display_back = false
+
 local circles = {circles = {}, nmb = 20, m_size = 60, speed = 2}
 
 function init_background(z)
   sw = GW
   sh = GH
   this = init_screen("background",update_background, draw_background, background_clr, 0, 0, sw, sh, z or 1 )
+  display_back = false
   
   for i = 1, circles.nmb do
     local circle = new_circle()
@@ -21,7 +24,7 @@ end
 
 function update_background()
   for i, c in pairs(circles.circles) do
-    c.r = c.r + c.sign * c.speed
+    c.r = c.r + c.sign * c.speed 
     if c.r > circles.m_size then c.sign = -1
     elseif c.r < 0  then circles.circles[i] = new_circle() end
   end
@@ -33,6 +36,14 @@ function draw_background()
     circfill(c.x, c.y + (c.st*2 - t()*2) * 70 , c.r + 4, c.clr == 0 and 6 or 0)
     circfill(c.x, c.y + (c.st*2 - t()*2) * 70 , c.r, c.clr)
   end
+  
+  if display_back then
+    use_font("description")
+      -- shaded_cool_print("press tab to go back", 15, 10 + (sin_buttons or 0), 0, 0)
+      shaded_cool_print("Press tab to go back", 15 , 5 + (sin_buttons or 0))
+    use_font("big")
+  end
+  
 end
 
 function new_circle()
