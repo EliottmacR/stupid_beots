@@ -13,8 +13,8 @@ TRANSIT = false
 
 function init_screens()
   init_background(0)
-  -- init_title_screen(1)
-  init_choose_game(1)
+  init_title_screen(1)
+  --init_choose_game(1)
 end
 
 function init_screen(name, update, draw, background_clr, x, y, w, h, z)
