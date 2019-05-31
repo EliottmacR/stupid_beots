@@ -63,7 +63,7 @@ function update_choose_game(dt)
       end    
     end
     
-    if btn(5) then 
+    if btnp(5) then 
       begin_transition_from_to(this,"title_screen")
     end
   end
