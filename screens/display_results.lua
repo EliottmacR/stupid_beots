@@ -57,7 +57,7 @@ function draw_display_results()
     very_cool_print(t_question , sw/2,  80 + y_anim + y_offset)
     y_offset = y_offset + str_px_height("9")
     
-    very_cool_print("Betted on :", sw/2, 180 + y_anim + y_offset, 0, 7, 5, 11)
+    very_cool_print("Bet on :", sw/2, 180 + y_anim + y_offset, 0, 7, 5, 11)
     y_offset = y_offset + str_px_height("9")    
     very_cool_print(t_betted_on, sw/2, 180 + y_anim + y_offset, 0, 7)
     y_offset = y_offset + str_px_height("9")*2
@@ -105,7 +105,7 @@ function draw_display_results()
 
   y_offset = y_offset + str_px_height("9")*5
   
-  very_cool_print("You betted ".. betted_money .. coin, sw/2, 40 + y_anim + y_offset, 0, 5)  
+  very_cool_print("You bet ".. betted_money .. coin, sw/2, 40 + y_anim + y_offset, 0, 5)  
   
   y_offset = y_offset + str_px_height("9")
   

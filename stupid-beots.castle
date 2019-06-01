@@ -2,3 +2,5 @@ main: main.lua
 title: Stupid Beots
 owner: spaceling
 primaryColor: dd66dd
+dimensions: full
+coverImage: https://raw.githubusercontent.com/EliottmacR/LuaMinion/master/logo.png

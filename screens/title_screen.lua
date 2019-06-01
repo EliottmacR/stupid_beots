@@ -65,9 +65,7 @@ function update_title_screen(dt)
       begin_transition_from_to(this,"choose_game")
     end
     if btn(0) and shop_rect.hovered then 
-      log("here")
-      if my_money < 999 then t_display_no_money = max_t_d_n_m end
-      
+      if my_money < 999 and t_display_no_money < 0 then t_display_no_money = max_t_d_n_m end      
     end
   end
 end
@@ -98,7 +96,7 @@ function draw_title_screen()
     end
     
     
-    local str = " You must gather 999 coins. "
+    local str = " You need " .. 999 - my_money .. " more coins. "
     local h = 45
     local w = str_px_width(str)
     local spc = 5

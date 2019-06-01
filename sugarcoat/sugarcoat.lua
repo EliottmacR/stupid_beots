@@ -8,7 +8,7 @@ if CASTLE_PREFETCH then
     "sugarcoat/gfx_vault.lua",
     "sugarcoat/input.lua",
     "sugarcoat/maths.lua",
-    --"sugarcoat/map.lua",
+    -- "sugarcoat/map.lua",
     "sugarcoat/sprite.lua",
     "sugarcoat/text.lua",
     "sugarcoat/time.lua",
@@ -26,6 +26,8 @@ local events = require("sugarcoat/sugar_events")
 local active_canvas
 local old_love = love
 
+local _debug = debug
+
 local function arrange_call(v, before, after)
   return function(...)
     -- wrap before
@@ -37,7 +39,7 @@ local function arrange_call(v, before, after)
     
     local r
     if v then
-      r = {pcall(v, ...)}
+      r = {xpcall(v, _debug.traceback, ...)}
     else
       r = {true}
     end
@@ -50,7 +52,34 @@ local function arrange_call(v, before, after)
     if r[1] then
       return r[2]
     else
+      r_log(r[2])
       error(r[2], 0)
+    end
+  end
+end
+
+if SUGAR_SERVER_MODE then
+  arrange_call = function(v, before, after)
+    return function(...)
+      -- wrap before
+      
+      if before then before(...) end
+      
+      local r
+      if v then
+        r = {xpcall(v, _debug.traceback, ...)}
+      else
+        r = {true}
+      end
+      
+      if after then after(...) end
+
+      if r[1] then
+        return r[2]
+      else
+        r_log(r[2])
+        error(r[2], 0)
+      end
     end
   end
 end
@@ -77,6 +106,19 @@ love = setmetatable({}, {
   end
 })
 
+if castle then
+  local old_castle = castle
+  castle = setmetatable({}, {
+    __index = old_castle,
+    __newindex = function(t, k, v)
+      if type(v) == "function" or v == nil then
+        old_castle[k] = arrange_call(v)
+      else
+        old_castle[k] = v
+      end
+    end
+  })
+end
 
 local _dont_arrange = {
   getVersion           = true,

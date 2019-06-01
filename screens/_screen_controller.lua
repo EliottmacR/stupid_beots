@@ -14,7 +14,7 @@ TRANSIT = false
 function init_screens()
   init_background(0)
   init_title_screen(1)
-  --init_choose_game(1)
+  -- init_choose_game(1)
 end
 
 function init_screen(name, update, draw, background_clr, x, y, w, h, z)
@@ -176,10 +176,13 @@ function begin_transition_from_to(screen, name)
     transitioning[2] = init_display_results(screen.z)   
   end
   
+  
   transitioning[3] = (tree_values[screen.name] < tree_values[name]) and "to_right" or "to_left"
   
   transitioning[2].x = GW * (transitioning[3] == "to_left" and -1 or 1)
   begin_t_time = t()
+  
+  log(transitioning[3])
   
   if transitioning[2] then return transitioning[2] end 
   

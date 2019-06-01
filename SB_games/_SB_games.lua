@@ -13,15 +13,6 @@ function init_SB_games()
   
   table.insert(SB_games, coin_toss(rnd_names_for_bots(2)))
   table.insert(SB_games, janken(rnd_names_for_bots(2)))
-  
-  -- table.insert(SB_games, tic_tac_toe(rnd_names_for_bots(2)))
-  -- table.insert(SB_games, rock_paper_scissors(rnd_names_for_bots(2)))
-  -- for i = 1, 7 do
-    -- local g = coin_toss(rnd_names_for_bots(2))
-    -- g.name = "Game #".. (i+3)
-    -- table.insert(SB_games, g)
-    
-  -- end
     
 end
 

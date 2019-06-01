@@ -27,7 +27,8 @@ function init_choose_game(z)
   
   display_back = true
   
-  selected_game = displayed_games[1] or nil
+  -- selected_game = displayed_games[1] or nil
+  choosen_game = SB_games[selected_index or 1] or nil
   
   return this
 end
@@ -63,7 +64,7 @@ function update_choose_game(dt)
       end    
     end
     
-    if btnp(5) then 
+    if btnp(5) and not TRANSIT then 
       begin_transition_from_to(this,"title_screen")
     end
   end

@@ -29,7 +29,7 @@ function janken(names)
     table.insert(coefs,2 * 1.25)
     
     table.insert(q,"Who will play the most with paper ?")
-    table.insert(a,{ct_bot_names[1], ct_bot_names[2]})
+    table.insert(a,{ct_bot_names[1], ct_bot_names[2], "Neither"})
     table.insert(coefs,2 * 1.25)
     
     table.insert(q,"Number of draw > 1/3 of the games ?")
@@ -115,26 +115,23 @@ end
 
 function update_janken(dt)
 
+    
+  if nexted or btnp(6) then 
+    nexted = false
+    if game_ended and not TRANSIT then
+      log("there")
+      begin_transition_from_to(sb_screen,"display_results")
+    else
+      log("here")
+      endgame()
+    end
+  end
+  
   if drawn_results < number_of_games then
     drawn_results = drawn_results + dt * min((drawn_results+.6), number_of_games / 7)
     drawn_results = min(drawn_results,number_of_games)
         
   else
-    endgame()
-  end
-  
-  if nexted then
-    if y_offset > 0 then
-      y_offset = flr(y_offset * 0.95)
-      y_offset = y_offset - 1
-    else
-      y_offset = max(-240, y_offset * - 1.05 *- 1)
-    end
-  else
-    y_offset = min(flr(drawn_results),number_of_games)/number_of_games * min(flr(drawn_results),number_of_games)/number_of_games * 300
-  end
-  
-  if btn(6) then 
     endgame()
   end
   
@@ -147,7 +144,7 @@ function draw_janken()
     -- log("there")
     target(game_surf)
     draw_each_play()
-    target()
+    target(sb_screen.surface)
     
     local w, h = surface_size(game_surf)
     
@@ -197,6 +194,7 @@ function rps_result(move1, move2)
     return c2 == 1 and 2 or 1     
   end
   
+  --return 1 if move1 wins, 2 if ..., 0 if draw
 
 end
 
@@ -292,16 +290,6 @@ function init_functions_janken()
   end
   
   draw_winner = function () 
-    -- local str
-    -- if winb1> number_of_games/2 then
-      -- str = "The Winner is : " .. ct_bot_names[1] .. " !"
-    -- elseif winb1< number_of_games/2 then
-      -- str = "The Winner is : " .. ct_bot_names[2] .. " !"
-    -- else
-      -- str = "It's a draw !"  
-    -- end
-    
-    -- very_cool_print(str, sw / 2, sh - 100, nil, nil, 5,  10)
 
   end
   
@@ -309,8 +297,6 @@ function init_functions_janken()
     if nexted then return end
     
     game_ended = true
-    nexted = true
-    end_game_y = -1
     
     drawn_results = number_of_games     
     history_to_bet_coin_toss()
@@ -324,7 +310,7 @@ function init_functions_janken()
     local h = history
     local bets = {}
     
-    local g = coin_toss()
+    local g = janken()
     
     local pre_sorted_bets = {}
     
@@ -336,64 +322,133 @@ function init_functions_janken()
       local questions = g.q
       local t_result_bet
       
-      -- table.insert(q,"Who wins out of the 200 tosses ?")  -- 1
-      -- table.insert(q,"Who wins the first Coin toss ?")    -- 2
-      -- table.insert(q,"Who wins the last Coin toss ?")     -- 3
       
       ---------------------------------
-      if index_q == 1 then -- {question = questions[index_q], betted_on = ct_bot_names[index - index_q], t_result = t_result_bet, achieved = achieved}
+      if index_q == 1 then
+        -- table.insert(q,"Who wins out of the " .. number_of_games .. " plays ?") -- 1
       
-        -- local winner_is_1 = 0
+        local f_winner = 0
         
-        -- for i, winner in pairs(h) do
-          -- winner_is_1 = winner_is_1 + (winner == 1 and 1 or 0)      
-        -- end
+        for i, game in pairs(h) do
+          
+          f_winner = f_winner + (winner == 1 and 1 or winner == 2 and - 1 or 0 )  
+          
+        end
          
-        -- t_result_bet = "Draw"
-        -- local result_bet   = 0
+        t_result_bet = g.a[index_q][3]
         
-        -- if winner_is_1> number_of_games/2 then 
-          -- result_bet = 1
+        local result_bet = 3
+        
+        if f_winner > 0 then 
+          result_bet = 1
           
-        -- elseif winner_is_1 < number_of_games/2 then
-          -- result_bet = 2
+        elseif f_winner < 0 then
+          result_bet = 2
           
-        -- end
+        end
         
-        -- if result_bet ~= 0 then 
-          -- t_result_bet = ct_bot_names[result_bet]
-        -- end
+        if result_bet ~= 3 then 
+          t_result_bet = ct_bot_names[result_bet]
+        end
         
-        -- achieved = (result_bet == (index - index_q*10))
+        achieved = (result_bet == (index - index_q*10))
       
       
-      elseif index_q == 2 then -- {question = questions[index_q], betted_on = ct_bot_names[index - index_q], t_result = t_result_bet, achieved = achieved}
+      elseif index_q == 2 then
+      -- table.insert(q,"Who wins the first with rock ?")-- 2
         
-        -- t_result_bet = ct_bot_names[h[1]]
+          -- find when 1 wins with rock
+          local index_of_game1 = 1
+          
+          while history[index_of_game1][1] ~= 1 and rps_result(history[index_of_game1][1], history[index_of_game1][2]) ~= 1 do index_of_game1 = index_of_game1 + 1 end
+          
+          
+          -- find when 2 wins with rock
+          local index_of_game2 = 1
+          
+          while history[index_of_game2][2] ~= 1 and rps_result(history[index_of_game2][1], history[index_of_game2][2]) ~= 2 do index_of_game2 = index_of_game2 + 1 end
+          
+          -- compare as numbers cant be the same because rock vs rock is not win
+          
+          local winner = index_of_game1 < index_of_game2 and 1 or 2
+          
+          t_result_bet = ct_bot_names[winner]
         
-        -- if h[1] == (index - index_q*10) then 
-          -- achieved = true
-        -- end
+          if ct_bot_names[winner] == g.a[index_q][index - index_q*10] then 
+            achieved = true
+          end
       
-      -- elseif index_q == 3 then -- {question = questions[index_q], betted_on = ct_bot_names[index - index_q], t_result = t_result_bet, achieved = achieved}
-      
-        -- t_result_bet = ct_bot_names[h[number_of_games]]      
+      elseif index_q == 3 then
+      -- table.insert(q,"Who wins the last with rock ?") -- 3
         
-        -- if h[number_of_games] == (index - index_q*10) then 
-          -- achieved = true
-        -- end
+          local index_of_game1 = number_of_games
+          
+          while history[index_of_game1][1] ~= 1 and rps_result(history[index_of_game1][1], history[index_of_game1][2]) ~= 1 do index_of_game1 = index_of_game1 - 1 end
+          
+          
+          local index_of_game2 = number_of_games
+          
+          while history[index_of_game2][2] ~= 1 and rps_result(history[index_of_game2][1], history[index_of_game2][2]) ~= 2 do index_of_game2 = index_of_game2 - 1 end
+              
+          local winner = index_of_game1 > index_of_game2 and 1 or 2
+          
+          t_result_bet = ct_bot_names[winner]
+        
+          if ct_bot_names[winner] == g.a[index_q][index - index_q*10] then 
+            achieved = true
+          end
+      
+      elseif index_q == 4 then
+        -- table.insert(q,"Who will play the most with paper ?")                   -- 4
+        
+          local numberofplays1 = 0
+          local numberofplays2 = 0
+          
+          t_result_bet = g.a[index_q][3]
+          
+          for index, game in pairs(history) do
+            if game[1] == 2 then numberofplays1 = numberofplays1 + 1 end
+            if game[2] == 2 then numberofplays2 = numberofplays2 + 1 end 
+          end
+          
+          
+          local winner = (numberofplays1 > numberofplays2) and 1 or (numberofplays1 < numberofplays2) and 2 or 0
+          
+          if winner ~= 0 then
+            t_result_bet = ct_bot_names[winner]
+          end
+          if t_result_bet == g.a[index_q][index - index_q*10] then 
+            achieved = true
+          end
+      
+      elseif index_q == 5 then
+        -- table.insert(q,"Number of draw > 1/3 of the games ?")                   -- 5
+        
+          local numberofdraw = 0
+          
+          for index, game in pairs(history) do
+            if rps_result(game[1], game[2]) == 0 then numberofdraw = numberofdraw + 1 end
+          end
+          
+          t_result_bet = numberofdraw > flr(number_of_games/3) and g.a[index_q][1] or g.a[index_q][2] 
+          
+          if t_result_bet  == g.a[index_q][index - index_q*10] then 
+            achieved = true
+          end
       
       end
       
       --------------------------------------
       
-      if questions[index_q] and ct_bot_names[index - index_q*10] and t_result_bet then 
+      if g.q[index_q] and g.a[index_q][index - index_q*10] and t_result_bet then  
       
-      local b = {question = questions[index_q], betted_on = ct_bot_names[index - index_q*10], t_result = t_result_bet, achieved = achieved}
+      -- local b = {question = g.q[index_q], betted_on = g.a[index_q][index - index_q*10], t_result = t_result_bet, achieved = achieved}
       
-      table.insert(pre_sorted_bets, { ["a"] = {question = questions[index_q], betted_on = ct_bot_names[index - index_q*10], t_result = t_result_bet, achieved = achieved} , ["index_q"] = index_q}  )
+      table.insert(pre_sorted_bets, { ["a"] = {question = g.q[index_q], betted_on = g.a[index_q][index - index_q*10], t_result = t_result_bet, achieved = achieved} , ["index_q"] = index_q} )
+      
       end
     end
+    
     -- sort bets according to index of question
     local ind = 1
     

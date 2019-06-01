@@ -19,6 +19,7 @@ function init_choose_bets(z)
   z = z or 1
   this = init_screen("choose_bets",update_choose_bets, draw_choose_bets, background_clr, 0, 0, sw, sh, z )
   
+  choosen_game = selected_game
   choosen_game = SB_games[selected_index or 1]
   y_tab = 150
   coef_b = 1
@@ -35,7 +36,7 @@ end
 function update_choose_bets(dt)
   if not choosen_game.q then return end
   
-  if btnp(5) and not TRANSIT then 
+  if btn(5) and not TRANSIT then 
     begin_transition_from_to(this,"choose_game")
   end
     

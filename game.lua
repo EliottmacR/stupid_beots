@@ -31,15 +31,13 @@ function init_game()
   register_btn(5, 0, input_id("keyboard", "tab"))
   register_btn(6, 0, input_id("keyboard", "return"))
   
+  love.mouse.setVisible(false)
 end
+  
 
 function update_game(dt)
   time_since_launch = time_since_launch + dt
   sin_buttons = sin(t() / 2) * 5
-  
-  -- if time_since_launch > times_gave_money * 15 then
-    -- give_player_coin()
-  -- end
   
   update_screens(dt)
 end
@@ -47,11 +45,24 @@ end
 function draw_game()
   cls(background_clr)
   draw_screens()
+  draw_mouse()
 end
 
-function give_player_coin(coins)
-  if not coins then times_gave_money = times_gave_money + 1 end
-  coins = coins or 1 
-  my_money = my_money + coins
+
+function draw_mouse()
+  -- use_font("description")
+  -- print("<", btnv(2) - 7, btnv(3) - 17)
+  -- print("+", btnv(2) - 7, btnv(3) - 17)
+  -- use_font("big")
+  
+  
+  circfill(btnv(2), btnv(3), 8, 0)
+  
+  rectfill(btnv(2) - 4, btnv(3) - 2,btnv(2) + 4, btnv(3) + 2, flr(time_since_launch*5)%16)
+  rectfill(btnv(2) - 2, btnv(3) - 4,btnv(2) + 2, btnv(3) + 4, flr(time_since_launch*5)%16)
+  
+  
+  
+  
   
 end
