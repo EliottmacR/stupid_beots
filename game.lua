@@ -28,7 +28,7 @@ function init_game()
       my_money = castle.storage.get("money")
       if my_money then first_connection = false end
       
-      my_money = my_money or 3
+      my_money = my_money or 7
       loaded_money = true
     end)
   end
