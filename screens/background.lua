@@ -37,12 +37,19 @@ function draw_background()
     circfill(c.x, c.y + (c.st*2 - t()*2) * 70 , c.r, c.clr)
   end
   
-  if display_back then
-    use_font("description")
+  -- if display_back then
+    -- use_font("description")
       -- shaded_cool_print("press tab to go back", 15, 10 + (sin_buttons or 0), 0, 0)
-      shaded_cool_print("Press tab to go back", 15 , 5 + (sin_buttons or 0))
-    use_font("big")
-  end
+      -- shaded_cool_print("Press LMB to go back", 15 , 5 + (sin_buttons or 0))
+    -- use_font("big")
+  -- end
+  
+  -- if display_skip then
+    -- use_font("description")
+      -- shaded_cool_print("press tab to go back", 15, 10 + (sin_buttons or 0), 0, 0)
+      -- shaded_cool_print("Press LMB to go skip", 15 , 5 + (sin_buttons or 0))
+    -- use_font("big")
+  -- end
   
 end
 

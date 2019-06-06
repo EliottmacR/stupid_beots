@@ -7,40 +7,32 @@ local number_of_games = 999
 
 function janken(names)
     
-  function q_a()
-  
-    local q = {}
-    local a = {}
-    local coefs = {}
-    if not ct_bot_names then 
-      ct_bot_names = {names[1] or "Trasevol Bot", names[2] or "BimBamBot"}
-      -- ct_bot_names = {"BenjaminBoton" ,"BenjaminBoton"}
-    end
-    table.insert(q,"Who wins out of the " .. number_of_games .. " plays ?")
-    table.insert(a,{ct_bot_names[1], ct_bot_names[2], "Neither"})
-    table.insert(coefs,3 * 1.25)
-    
-    table.insert(q,"Who wins the first with rock ?")
-    table.insert(a,{ct_bot_names[1], ct_bot_names[2]})
-    table.insert(coefs,2 * 1.25)
-    
-    table.insert(q,"Who wins the last with rock ?")
-    table.insert(a,{ct_bot_names[1], ct_bot_names[2]})
-    table.insert(coefs,2 * 1.25)
-    
-    table.insert(q,"Who will play the most with paper ?")
-    table.insert(a,{ct_bot_names[1], ct_bot_names[2], "Neither"})
-    table.insert(coefs,2 * 1.25)
-    
-    table.insert(q,"Number of draw > 1/3 of the games ?")
-    table.insert(a,{"Yes", "No"})
-    table.insert(coefs,2 * 1.25)
-  
-    return q, a, coefs, ct_bot_names
-  
+  local q = {}
+  local a = {}
+  local coefs = {}
+  if not ct_bot_names then 
+    ct_bot_names = {names[1] or "Trasevol Bot", names[2] or "BimBamBot"}
+    -- ct_bot_names = {"BenjaminBoton" ,"BenjaminBoton"}
   end
+  table.insert(q,"Who wins out of the " .. number_of_games .. " plays ?")
+  table.insert(a,{ct_bot_names[1], ct_bot_names[2], "Neither"})
+  table.insert(coefs,3 * 1.25)
   
-  local questions, answers, coefs, b_names = q_a()
+  table.insert(q,"Who wins the first with rock ?")
+  table.insert(a,{ct_bot_names[1], ct_bot_names[2]})
+  table.insert(coefs,2 * 1.25)
+  
+  table.insert(q,"Who wins the last with rock ?")
+  table.insert(a,{ct_bot_names[1], ct_bot_names[2]})
+  table.insert(coefs,2 * 1.25)
+  
+  table.insert(q,"Who will play the most with paper ?")
+  table.insert(a,{ct_bot_names[1], ct_bot_names[2], "Neither"})
+  table.insert(coefs,2 * 1.25)
+  
+  table.insert(q,"Number of draw > 1/3 of the games ?")
+  table.insert(a,{"Yes", "No"})
+  table.insert(coefs,2 * 1.25)
   
   return 
   {
@@ -49,10 +41,12 @@ function janken(names)
                     "Rock, Paper, Scissors ! ",
                     "Probably the first game where",
                     "you can beat your opponent with ",
-                    "a sheet of paper. " .. number_of_games .. " plays!"
+                    "a sheet of paper. " .. number_of_games .. " plays!",
+                    "Better for low-budget, ",
+                    "low chance bets and high reward."
                     },
-    q = questions,
-    a = answers,
+    q = q,
+    a = a,
     coefs = coefs,
     b_names = b_names,
     
@@ -116,13 +110,11 @@ end
 function update_janken(dt)
 
     
-  if nexted or btnp(6) then 
+  if nexted or btnp(1) then 
     nexted = false
     if game_ended and not TRANSIT then
-      log("there")
       begin_transition_from_to(sb_screen,"display_results")
     else
-      log("here")
       endgame()
     end
   end
@@ -141,7 +133,6 @@ function draw_janken()
 
   
   if game_surf then
-    -- log("there")
     target(game_surf)
     draw_each_play()
     target(sb_screen.surface)
@@ -154,8 +145,6 @@ function draw_janken()
   end
   
   draw_advancement()
-  
-  -- draw_play_results_bar()
   
   if game_ended then
     draw_next_button()  

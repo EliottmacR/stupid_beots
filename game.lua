@@ -6,7 +6,9 @@ require("SB_games/_SB_games")
 -- color 7, 8, 9, 0 and 10 do not break your eyes
 
 local background_clr = 4
-my_money = 3
+my_money = nil
+loaded_money = false
+first_connection = true
 time_since_launch = 0
 -- local times_gave_money = 0
 sin_buttons = 0
@@ -21,6 +23,15 @@ function init_game()
   load_font("sugarcoat/TeapotPro.ttf", 126, "very_very_big", false)
   m_font = love.graphics.newFont("sugarcoat/TeapotPro.ttf", 64)
   
+  if not loaded_money then
+    network.async(function () 
+      my_money = castle.storage.get("money")
+      if my_money then first_connection = false end
+      
+      my_money = my_money or 3
+      loaded_money = true
+    end)
+  end
   init_screens()
   init_SB_games()
   register_btn(0, 0, input_id("mouse_button", "lb"))
@@ -38,7 +49,6 @@ end
 function update_game(dt)
   time_since_launch = time_since_launch + dt
   sin_buttons = sin(t() / 2) * 5
-  
   update_screens(dt)
 end
 
@@ -50,19 +60,22 @@ end
 
 
 function draw_mouse()
-  -- use_font("description")
-  -- print("<", btnv(2) - 7, btnv(3) - 17)
-  -- print("+", btnv(2) - 7, btnv(3) - 17)
-  -- use_font("big")
-  
   
   circfill(btnv(2), btnv(3), 8, 0)
   
   rectfill(btnv(2) - 4, btnv(3) - 2,btnv(2) + 4, btnv(3) + 2, flr(time_since_launch*5)%16)
   rectfill(btnv(2) - 2, btnv(3) - 4,btnv(2) + 2, btnv(3) + 4, flr(time_since_launch*5)%16)
   
-  
-  
-  
-  
+end
+
+function save_money()
+  castle.storage.set("money", my_money)
+end
+
+function load_money()
+  log(castle.storage.get("money"))
+end
+
+function erase_money()
+  castle.storage.set("money", nil)
 end

@@ -29,14 +29,17 @@ function init_choose_bets(z)
   clicked_on_bet = false
   betted_money = 1
   
-  log(choosen_game.name)
+  pre_pox_x = 0
+  pre_pox_y = 0
+  
+  -- log(choosen_game.name)
   return this
 end
 
 function update_choose_bets(dt)
   if not choosen_game.q then return end
   
-  if btn(5) and not TRANSIT then 
+  if btnp(1) and not TRANSIT then 
     begin_transition_from_to(this,"choose_game")
   end
     
@@ -50,6 +53,9 @@ function update_choose_bets(dt)
   end
   
 end
+
+local pre_pox_x
+local pre_pox_y
 
 function draw_choose_bets()
   if not choosen_game.q then return end
@@ -82,13 +88,20 @@ function draw_choose_bets()
         local hovered = false
         if not TRANSIT then
           if mouse_in_rect(xb, yb, xb + wb, yb + hb) then
+            if not mouse_in_rect(xb, yb, xb + wb, yb + hb, pre_pox_x, pre_pox_y) then 
+              sugar.audio.sfx ("selected")
+              -- log("here")
+            end
             hovered = true
           elseif clicked_on[iq*10 + ia] then
             hovered = true
           end
         end
         
-        if not TRANSIT and btnp(0) and mouse_in_rect(xb, yb, xb + wb, yb + hb) then hovered = not hovered click_on_answer(iq, ia) end
+        if not TRANSIT and btnp(0) and mouse_in_rect(xb, yb, xb + wb, yb + hb) then 
+          hovered = not hovered click_on_answer(iq, ia)
+          sugar.audio.sfx ("selection")  
+        end
         
         button (a, xb, yb, wb, hb, border, hovered, nil, nil, nil, clicked_on[iq*10 + ia])
     
@@ -107,10 +120,17 @@ function draw_choose_bets()
     
     local hovered = false
     
+    
     hovered = mouse_in_rect(xb, yb, xb + wb, yb + hb)  
-    if not clicked_on_bet and ((btnp(0) and mouse_in_rect(xb, yb, xb + wb, yb + hb)) or (btnp(6) ) ) and not TRANSIT then 
-      hovered = true
-      click_on_bet() 
+    if mouse_in_rect(xb, yb, xb + wb, yb + hb) then
+      if not mouse_in_rect(xb, yb, xb + wb, yb + hb, pre_pox_x, pre_pox_y) then 
+        sugar.audio.sfx ("selected") 
+      end
+      if not TRANSIT and not clicked_on_bet and (btnp(0) or btnp(6)) then 
+        hovered = true
+        click_on_bet() 
+        sugar.audio.sfx ("selection") 
+      end
     end
     
     button (" Bet! ", xb, yb, wb, hb, border, hovered, 11, 5)
@@ -161,18 +181,37 @@ function draw_choose_bets()
   if btnp(0) and mouse_in_rect(rx + border, ry + rect_size_h*2/3, rx + rect_size_w/2 - border/2, ry + rect_size_h - border) then
     betted_money = max(betted_money - 1, 1)
     dt_minus = dt_minus + dt()
+    sugar.audio.sfx ("lselected") 
   end
   
   if dt_minus > 0 then
     dt_minus = dt_minus + dt()
     if dt_minus > .5 then
       betted_money = max(betted_money - flr((dt_minus + 1) * .8), 1)
+      if betted_money ~= 1 then
+      sugar.audio.sfx ("lselected") 
+      end
     end
   end
   
   
   color(dt_minus ~= 0 and 5 or background_clr)
-  rectfill(rx + border              , ry + rect_size_h*2/3, rx + rect_size_w/2 - border/2, ry + rect_size_h - border)
+  rectfill( rx + border              , ry + rect_size_h*2/3, rx + rect_size_w/2 - border/2, ry + rect_size_h - border)
+  
+  local yy = rx + border + (rect_size_w/2 - border*1.5) * min((dt_minus > 0 and dt_minus or 0), .5) * 2
+ 
+  if yy - (rx + border) > 5 then 
+    rectfill( rx + border            , 
+              ry + rect_size_h*2/3, 
+              yy  ,
+              ry + rect_size_h*2/3 + 20 - border, 13)
+            
+  end
+            
+            
+            
+            
+            
   local minus =  "-" 
   shaded_cool_print(minus, rx + rect_size_w/4  - str_px_width(minus)/2 ,ry + str_px_height(minus)/2 - 10 + sin_buttons + rect_size_h*2/3)
   
@@ -182,12 +221,16 @@ function draw_choose_bets()
   if btnp(0) and mouse_in_rect(rx + border/2 + rect_size_w/2, ry + rect_size_h*2/3, rx + rect_size_w   - border, ry + rect_size_h - border) then     
     dt_plus = dt_plus + dt()
     betted_money = min(betted_money + 1, my_money)
+    sugar.audio.sfx ("lselection") 
   end
   
   if dt_plus > 0 then
     dt_plus = dt_plus + dt()
     if dt_plus > .5 then
       betted_money = min(betted_money + flr((dt_plus + 1) * .8), my_money)
+      if betted_money ~= my_money then
+        sugar.audio.sfx ("lselection") 
+      end
     end
   end
   
@@ -202,7 +245,15 @@ function draw_choose_bets()
   local plus = "+"
   shaded_cool_print(plus, rx + rect_size_w*3/4  - str_px_width(plus)/2 ,ry + str_px_height(plus)/2 - 10 + sin_buttons + rect_size_h*2/3)
   
+  local yy = rx + border/2 + rect_size_w/2  + (rect_size_w/2  - border*1.5) * min((dt_plus > 0 and dt_plus or 0), .5) * 2
     
+  if yy - (rx + border/2 + rect_size_w/2) > 5 then 
+    rectfill( rx + border/2 + rect_size_w/2          , 
+              ry + rect_size_h*2/3, 
+              yy  ,
+              ry + rect_size_h*2/3 + 20 - border, 13)
+  end
+  
   if coef_b > 1 then
     local str = " Possible gain: " .. flr(betted_money * coef_b) .. "c" .. (betted_money>1 and "s" or "")
     lesser_cool_print(str, (sw - rect_size_w)/2, rect_size_h/2-str_px_height(str)/2 , nil, 5,  10)
@@ -218,9 +269,12 @@ function draw_choose_bets()
   
   if #choosen_game.q > 2 and y_tab > 130 then
     use_font("description")
-    shaded_cool_print("Scroll to see more", sw - str_px_width("scroll to see more") - 7 ,sin_buttons +  sh - str_px_height("scroll to see more")/2 )
+    shaded_cool_print("Scroll to see more", cos(time_since_launch)*3 + sw - str_px_width("scroll to see more") - 7 ,sin(time_since_launch * 2) * 3 +  sh - str_px_height("scroll to see more")/2, flr(time_since_launch * 5) % 16 )
     use_font("big")
   end
+  
+  pre_pox_x = btnv(2)
+  pre_pox_y = btnv(3)
   
 end
 
@@ -263,8 +317,6 @@ function calculate_coef()
     end
   end
   coef_b = flr((coef_b * 10)) / 10
-  log(coef_b)
-
 end
 
 function click_on_bet() 

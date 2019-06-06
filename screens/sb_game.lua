@@ -25,7 +25,7 @@ function init_sb_game(z)
   inited = false
   sb_game = nil
   sb_rules = nil
-
+  display_skip = true
   
   return sb_screen
 end

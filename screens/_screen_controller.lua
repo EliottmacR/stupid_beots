@@ -1,5 +1,6 @@
 require("screens/generic_screen")
 require("screens/background")
+require("screens/winground")
 require("screens/title_screen")
 require("screens/choose_game")
 require("screens/choose_bets")
@@ -50,7 +51,7 @@ function update_screens(dt)
   local x_between_screens = 150
   if count(transitioning) > 1 then 
     TRANSIT = true
-    local x = (t()-begin_t_time) / 2
+    local x = (t()-begin_t_time)
     
     if transitioning[3] == "to_left" then
     
@@ -131,6 +132,7 @@ function add_screen(name, screen, z)
 end
 
 function remove_screen(screenp)
+  sugar.audio.sfx ("selected") 
   if not screenp then return end 
   
   for j, layer in pairs(screen_controller.layer) do
@@ -156,7 +158,7 @@ end
 
 function begin_transition_from_to(screen, name)
 
-  if not screen or TRANSIT then log("im out") return end
+  if not screen or TRANSIT then return end
   transitioning = {}
   TRANSIT = true
   local tree_values = get_tree_values()
@@ -182,7 +184,7 @@ function begin_transition_from_to(screen, name)
   transitioning[2].x = GW * (transitioning[3] == "to_left" and -1 or 1)
   begin_t_time = t()
   
-  log(transitioning[3])
+  -- log(transitioning[3])
   
   if transitioning[2] then return transitioning[2] end 
   

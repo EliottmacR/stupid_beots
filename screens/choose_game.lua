@@ -24,10 +24,11 @@ function init_choose_game(z)
   end
   
   t_display_no_money = 0
-  
+  display_skip = false
   display_back = true
+  pre_pox_x = 0
+  pre_pox_y = 0
   
-  -- selected_game = displayed_games[1] or nil
   choosen_game = SB_games[selected_index or 1] or nil
   
   return this
@@ -47,7 +48,7 @@ function update_choose_game(dt)
   t_display_no_money = t_display_no_money - dt
   
   if not (TRANSIT) then
-    if btn(4) and count(SB_games) > 5 then
+    if btnp(4) and count(SB_games) > 5 then
       -- loop index for 5 games
       top_index = top_index + ((btnv(4) > 0) and -1 or 1)
       
@@ -64,15 +65,20 @@ function update_choose_game(dt)
       end    
     end
     
-    if btnp(5) and not TRANSIT then 
+    if btnp(1) and not TRANSIT then 
       begin_transition_from_to(this,"title_screen")
     end
   end
   
 end
 
+local pre_pox_x
+local pre_pox_y
+
 function draw_choose_game()
   cls(background_clr)
+  
+  
   
   -- display all game on the right of the screen
       
@@ -100,7 +106,12 @@ function draw_choose_game()
         color(5)
       elseif mouse_in_rect(x1_b,y1_b,x2_b,y2_b) then
         color(7)
-        if btn(0) and displayed_games[i] then selected_game = displayed_games[i] selected_index = i end
+        if not mouse_in_rect(x1_b,y1_b,x2_b,y2_b, pre_pox_x, pre_pox_y) and not TRANSIT then 
+          sugar.audio.sfx ("selected") 
+        end
+        
+        if btnp(0) and displayed_games[i] then selected_game = displayed_games[i] selected_index = i sugar.audio.sfx ("selection") end
+     
       end
       
       rectfill( x1_b + border, y1_b + border, x2_b - border, y2_b - border)
@@ -149,15 +160,25 @@ function draw_choose_game()
     rectfill( x1_b + border, y1_b + border, x2_b - border, y2_b - border)
               
     local c = 5  
-    if mouse_in_rect(x1_b,y1_b,x2_b,y2_b) or btn(6) then
+    if mouse_in_rect(x1_b,y1_b,x2_b,y2_b) or btnp(6) then
       c = 11
+      
+      if not mouse_in_rect(x1_b,y1_b,x2_b,y2_b, pre_pox_x, pre_pox_y) and not TRANSIT  then 
+        sugar.audio.sfx ("selected") 
+      end
+        
       if (not TRANSIT) and (btnp(0) or btnp(6)) then
-        c = background_clr
-        if my_money > 0 then
+        c = background_clr        
+        
+        if my_money and my_money > 0 then
           begin_transition_from_to(this,"choose_bets")
+        sugar.audio.sfx ("selection") 
         elseif t_display_no_money < 0 then
+        sugar.audio.sfx ("selected") 
           t_display_no_money = max_t_d_n_m
         end      
+      else
+        -- played_audio2 = false      
       end      
     end      
     shaded_cool_print(str, x_select, y_select + sin_buttons/2 , 0, c)
@@ -172,7 +193,7 @@ function draw_choose_game()
     -- title
     
         use_font("very_big")
-          very_cool_print(selected_game.name, sw * 1.2/4 , sh*.8/4 + sin_buttons, 7, 0)
+          very_cool_print(selected_game.name, sw * 1.2/4 , 80 + sin_buttons, 7, 0)
         use_font("big")
       
     -- description
@@ -180,7 +201,7 @@ function draw_choose_game()
       -- rect
         local border = 20
         local x1 = 50 - border
-        local y1 = sh / 3 - border + sin_buttons
+        local y1 = sh / 4 - border + sin_buttons
         local x2 = sw / 2 + 25 + border
         local y2 = y1 + (#selected_game.description+1) * str_px_height("9") + border
         local step = 20
@@ -225,7 +246,13 @@ function draw_choose_game()
     end
     
     
-    local str = " You no longer have money. "
+    local str = not loaded_money and "Waiting for money..." or " You no longer have money. "
+    
+    if loaded_money and my_money and my_money > 0 then 
+      t_display_no_money = min(t_display_no_money, t_transition + .8)
+      str = "Welcome " .. (not first_connection and "back " or "") ..(castle.user.getMe().name or castle.user.getMe().username or "" ) ..  "."
+    end
+    
     local h = 45
     local w = str_px_width(str)
     local spc = 5
@@ -240,7 +267,15 @@ function draw_choose_game()
     cool_print(str, x, y - h * 1.2)  
   end
   
-  shaded_cool_print("Coins:" .. my_money, str_px_width("9"), sh - str_px_height("9")*1.3 + sin_buttons, 0, 5 )
+  if loaded_money then
+    shaded_cool_print("Coins:" .. my_money, str_px_width("9"), sh - str_px_height("9")*1.3 + sin_buttons, 0, 5 )
+  else
+    very_cool_print("Loading...", str_px_width("  Loading...")/2, sh - str_px_height("9")*1.3 + sin_buttons, 0, 5 )
+  end
+  
+  pre_pox_x = btnv(2)
+  pre_pox_y = btnv(3)
+  
   
 end
 

@@ -1,6 +1,7 @@
 
 require("SB_games/coin_toss")
 require("SB_games/janken")
+require("SB_games/horse_race")
 
 SB_games = {}
 
@@ -13,6 +14,7 @@ function init_SB_games()
   
   table.insert(SB_games, coin_toss(rnd_names_for_bots(2)))
   table.insert(SB_games, janken(rnd_names_for_bots(2)))
+  table.insert(SB_games, horse_race(rnd_names_for_bots(2)))
     
 end
 

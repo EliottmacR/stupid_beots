@@ -59,7 +59,7 @@ function update_main_menu(dt)
   sin_buttons = sin(t() / 2) * 5
   
   
-  if btn(4) and count(SB_games) > 5 then
+  if btnp(4) and count(SB_games) > 5 then
     -- loop index for 5 games
     top_index = ((top_index + ((btnv(4) > 0) and -1 or 1) ) - 1) % count(SB_games) + 1
     

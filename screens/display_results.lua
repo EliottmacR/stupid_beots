@@ -17,6 +17,7 @@ function init_display_results(z)
   moving = true
   step = 1
   won_bet = true
+  sugar.audio.sfx ("selected") 
   
   for index, b in pairs(sorted_bets) do
     if not b.achieved then won_bet = false end
@@ -27,6 +28,7 @@ function init_display_results(z)
   -- bets = {}
   
   my_money = (won_bet and (flr(my_money + betted_money*coef_b)) or (my_money - betted_money))
+  network.async(function () save_money() end)
   
   return this
 end
@@ -34,10 +36,11 @@ end
 function update_display_results(dt)
   if moving then
     if y_anim > 4 - (step-1)*sh then
-      y_anim = max(y_anim - dt * 480, - (step-1)*sh)
+      y_anim = max(y_anim - dt * 630, - (step-1)*sh)
     else
       y_anim = -(step-1)*sh
       moving = false
+      sugar.audio.sfx ("selected")
     end
   end
 end
@@ -80,7 +83,8 @@ function draw_display_results()
   
   color(10)
   rectfill(x1, y1, x2, y2)
-  if mouse_in_rect(x1, y1, x2, y2) and btnp(0) and not TRANSIT then
+  if ((mouse_in_rect(x1, y1, x2, y2) and btnp(0)) or btnp(1) )and not TRANSIT then
+    sugar.audio.sfx ("selected") 
     if step == (#bets + 1) then
       begin_transition_from_to(this,"choose_game")
     else

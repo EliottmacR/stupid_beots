@@ -17,44 +17,38 @@ history_to_bet_coin_toss = nil
 
 function coin_toss(names)
     
-  function q_a()
-  
-    local q = {}
-    local a = {}
-    local coefs = {}
-    if not ct_bot_names then 
-      ct_bot_names = {names[1] or "Trasevol Bot", names[2] or "BimBamBot"}
-      -- ct_bot_names = {"Botman" ,"Angel Bot"}
-    end
-    table.insert(q,"Who wins out of the " .. number_of_games .. " tosses ?")
-    table.insert(a,ct_bot_names)
-    table.insert(coefs,2 * 1.25)
-    
-    table.insert(q,"Who wins the first Coin toss ?")
-    table.insert(a,ct_bot_names)
-    table.insert(coefs,2 * 1.25)
-    
-    table.insert(q,"Who wins the last Coin toss ?")
-    table.insert(a,ct_bot_names)
-    table.insert(coefs,2 * 1.25)
-  
-    return q, a, coefs, ct_bot_names
-  
+  local q = {}
+  local a = {}
+  local coefs = {}
+  if not ct_bot_names then 
+    ct_bot_names = {names[1] or "Trasevol Bot", names[2] or "BimBamBot"}
+    -- ct_bot_names = {"Botman" ,"Angel Bot"}
   end
+  table.insert(q,"Who wins out of the " .. number_of_games .. " tosses ?")
+  table.insert(a,ct_bot_names)
+  table.insert(coefs,2 * 1.25)
   
-  local questions, answers, coefs, b_names = q_a()
+  table.insert(q,"Who wins the first Coin toss ?")
+  table.insert(a,ct_bot_names)
+  table.insert(coefs,2 * 1.25)
+  
+  table.insert(q,"Who wins the last Coin toss ?")
+  table.insert(a,ct_bot_names)
+  table.insert(coefs,2 * 1.25)
   
   return 
   {
     name = "Coin toss !",
     description = {
-                    "Not much more to add to the game ",
-                    "title. A coin is flipped,",
-                    number_of_games .. " times. 50/50, equal chances ",
-                    "of winning. Do your best."
+                    "A coin is flipped, " .. number_of_games .. " times",
+                    "50/50, equal chances of ",
+                    "winning. Do your best.",
+                    "",
+                    "Better for low-budget,",
+                    "low chance bets and high reward."
                     },
-    q = questions,
-    a = answers,
+    q = q,
+    a = a,
     coefs = coefs,
     b_names = b_names,
     
@@ -136,7 +130,7 @@ function update_coin_toss(dt)
     y_offset = min(flr(drawn_results),number_of_games)/number_of_games * min(flr(drawn_results),number_of_games)/number_of_games * 300
   end
   
-  if btn(6) then 
+  if btnp(1) then 
     endgame()
   end
   
@@ -171,6 +165,7 @@ function draw_next_button()
   rectfill(x1, y1, x2, y2)
   
   if not TRANSIT and mouse_in_rect(x1, y1, x2, y2) and btnp(0) then
+    sugar.audio.sfx ("selected") 
     color(0)
     if not nexted then nexted = true end_game_y = -1
     elseif y_offset < -238 and not TRANSIT then 

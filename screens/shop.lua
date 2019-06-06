@@ -56,10 +56,10 @@ function update_shop(dt)
   shop_rect.hovered = mouse_in_rect_screen(this, shop_rect.x1, shop_rect.y1, shop_rect.x2, shop_rect.y2)
   
   if not TRANSIT then
-    if btn(0) and play_rect.hovered then 
+    if btnp(0) and play_rect.hovered then 
       begin_transition_from_to(this,"choose_game")
     end
-    if btn(0) and shop_rect.hovered then 
+    if btnp(0) and shop_rect.hovered then 
       begin_transition_from_to(this,"shop")
     end
   end
