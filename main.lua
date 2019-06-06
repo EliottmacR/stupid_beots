@@ -3,6 +3,81 @@ require("random_functions")
 require("sugarcoat/sugarcoat")
 sugar.utility.using_package(sugar.S, true)
 
+-- if CASTLE_PREFETCH then
+  -- CASTLE_PREFETCH({
+    -- 'background.lua',
+    -- 'game.lua',
+    -- 'loving.lua',
+    
+    -- 'assets/Fipps-Regular.otf',
+    
+    -- 'assets/menu_back.png',
+    -- 'assets/transition.png',
+    
+    -- "assets/sound/blaze.wav",
+    -- "assets/sound/blaze-theme.wav",
+    -- "assets/sound/card.wav",
+    -- "assets/sound/joker.wav",
+    -- "assets/sound/mirror.wav",
+    -- "assets/sound/select.wav",
+    
+    -- "assets/cards/1.png",
+    -- "assets/cards/2.png",
+    -- "assets/cards/3.png",
+    -- "assets/cards/4.png",
+    -- "assets/cards/5.png",
+    -- "assets/cards/6.png",
+    -- "assets/cards/7.png",
+    -- "assets/cards/8.png",
+    -- "assets/cards/9.png",
+    -- "assets/cards/10.png",
+    -- "assets/cards/blaze.png",
+    -- "assets/cards/joker.png",
+    -- "assets/cards/mirror.png",
+    -- "assets/cards/card_back.png",
+    -- "assets/cards/card_back_light.png"
+    
+-- })
+if CASTLE_PREFETCH then
+  CASTLE_PREFETCH({
+    "assets/background.wav",
+    "assets/explosion.wav",
+    "assets/explosion2.wav",
+    "assets/launch.wav",
+    "assets/selected.wav",
+    "assets/selection.wav",
+    
+    "assets/help.png",
+    "assets/hors.png",
+    "assets/sound.png",
+    "assets/no_sound.png",
+    
+    "SB_games/_SB_games.lua",
+    "SB_games/coin_toss.lua",
+    "SB_games/janken.lua",
+    "SB_games/horse_race.lua",
+    
+    "screens/_screen_controller.lua",
+    "screens/background.lua",
+    "screens/choose_bets.lua",
+    "screens/choose_game.lua",
+    "screens/display_results.lua",
+    "screens/generic_screen.lua",
+    "screens/main_menu.lua",
+    "screens/sb_game.lua",
+    "screens/shop.lua",
+    "screens/title_screen.lua",
+    "screens/winground.lua",
+    
+    "game.lua",
+    "main.lua",
+    "random_functions.lua",
+    
+    
+    
+})
+
+
 GW = 1000
 GH = 600
 zoom = 1
