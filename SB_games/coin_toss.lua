@@ -21,8 +21,8 @@ function coin_toss(names)
   local a = {}
   local coefs = {}
   if not ct_bot_names then 
-    -- ct_bot_names = {names[1] or "Trasevol Bot", names[2] or "BimBamBot"}
-    ct_bot_names = {"Trasevol Bottt" ,"Trasevol Bottt"}
+    ct_bot_names = {names[1] or "Trasevol Bot", names[2] or "BimBamBot"}
+    --ct_bot_names = {"Trasevol Bottt" ,"Trasevol Bottt"}
   end
   table.insert(q,"Who wins out of the " .. number_of_games .. " tosses ?")
   table.insert(a,ct_bot_names)
