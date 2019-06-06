@@ -118,7 +118,7 @@ function update_title_screen(dt)
       if beg_rect.hovered and wg_done then 
         sugar.audio.sfx ("selected")
         clicked_beg = true
-        if chance(3) and my_money < 5 then 
+        if chance(10) and my_money < 10 then 
           my_money = my_money + 1 
           network.async(function () save_money() end)
         end      
