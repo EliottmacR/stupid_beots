@@ -1,7 +1,7 @@
 main: main.lua
 title: Stupid Beots
 owner: spaceling
-primaryColor: dd66dd
+primaryColor: ffd100
 dimensions: full
 coverImage: https://raw.githubusercontent.com/EliottmacR/stupid_beots/master/stupid_beots.png
 description: Beat the game and don't let the RNG dictate your life !
