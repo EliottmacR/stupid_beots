@@ -51,20 +51,20 @@ function init_title_screen(z)
   
   ------ beg button
   
-  beg_rect.str = " Beg "  
+  beg_rect.str = " Search "  
   beg_rect.border = 10 
   
   beg_rect = {
-    x1 = sw - 100   - str_px_width(beg_rect.str)/2 - beg_rect.border,
+    x1 = sw - 100   - str_px_width(beg_rect.str)/2 - beg_rect.border - 20,
     y1 = sh - 100 - beg_rect.border ,
-    x2 = sw - 100     + str_px_width(beg_rect.str)/2 - 13 + beg_rect.border,
+    x2 = sw - 100     + str_px_width(beg_rect.str)/2 - 13 + beg_rect.border - 20,
     y2 = sh - 100 + str_px_height(beg_rect.str) * 1.4 + beg_rect.border,
-    xt = sw - 100,
+    xt = sw - 100 - 20,
     yt = sh - 100,
     border = 10,
     hovered = false
   }
-  beg_rect.str = "Beg"  
+  beg_rect.str = "Search"  
   beg_rect.border = 10 
    
   
