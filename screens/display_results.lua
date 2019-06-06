@@ -23,10 +23,6 @@ function init_display_results(z)
     if not b.achieved then won_bet = false end
   end
   
-  -- log(sorted_bets[1].achieved and "true" or "false")
-  -- log(won_bet and "true" or "false")
-  -- bets = {}
-  
   my_money = (won_bet and (flr(my_money + betted_money*coef_b)) or (my_money - betted_money))
   network.async(function () save_money() end)
   

@@ -79,7 +79,8 @@ function draw_choose_bets()
       local a = as[ia]
       --answer_in_button
         local xb,yb, wb, hb, border
-        xb = 10 + cumulated_w
+        local wi = all_chars_from_as(iq)
+        xb = 10 + cumulated_w + (wi > 30 and (cos(time_since_launch / 4) * (wi - 30) * str_px_width("9") ) or 0)
         yb = iq * str_px_height("9") * 3 + str_px_height("9") + 10 + y_tab + sin_buttons
         wb  = 15 + str_px_width(a) + 15
         hb  = str_px_height("9") 
@@ -329,7 +330,22 @@ function click_on_bet()
   end
 end
 
+function all_chars_from_as(iq)
+  if not choosen_game.a[iq] then return end
 
+  local as = choosen_game.a[iq]
+  local count_l = 0
+  
+
+  for index, word in pairs(as) do
+    count_l = count_l + string.len(word)  
+  end
+
+  -- log(count_l)
+
+  return count_l
+
+end
 
 
 

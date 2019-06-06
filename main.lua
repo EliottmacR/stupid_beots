@@ -48,22 +48,21 @@ function love.load()
   set_frame_waiting(30)
   
   love.math.setRandomSeed(os.time())
-  load_sfx ("selected.wav", "selected", .5)
-  load_sfx ("selected.wav", "lselected", .15)
-  load_sfx ("selection.wav", "selection", .5)
-  load_sfx ("selection.wav", "lselection", .15)
-  load_sfx ("explosion.wav", "explosion", .4)
-  load_sfx ("explosion2.wav", "explosion2", .4)
+  load_sfx ("assets/selected.wav", "selected", .5)
+  load_sfx ("assets/selected.wav", "lselected", .15)
+  load_sfx ("assets/selection.wav", "selection", .5)
+  load_sfx ("assets/selection.wav", "lselection", .15)
+  load_sfx ("assets/explosion.wav", "explosion", .4)
+  load_sfx ("assets/explosion2.wav", "explosion2", .4)
+  load_sfx ("assets/launch.wav", "launch", .2)
   
-  load_music("background.wav", "bgm", 1)
+  load_music("assets/background.wav", "bgm", 1)
   music("bgm", true)
   
-  load_png("horse", "horse.png")
-  
-  load_png("sound", "sound.png")
-  load_png("no_sound", "no_sound.png")
-  
-  load_png("help", "help.png")
+  load_png("horse", "assets/horse.png")  
+  load_png("sound", "assets/sound.png")
+  load_png("no_sound", "assets/no_sound.png")  
+  load_png("help", "assets/help.png")
   
   init_game()
 end

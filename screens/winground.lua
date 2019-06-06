@@ -32,6 +32,7 @@ function init_winground(z)
 end
 
 function create_firework(x, y)
+  sugar.audio.sfx ("launch")
   table.insert(fireworks, {pos = {x = x, y = y} , vel = {x = 0, y = -35 + rnd(10) }, particles = {}, exploded = false, color = irnd(16) })
 end
 
@@ -86,12 +87,12 @@ function update_winground(dt)
   
     for indp, particle in pairs(firework.particles) do
       -- update velocity 
-      if particle.life > 230 then 
-        particle.vel.x = (particle.vel.x + gravity.x) * .98     
-        particle.vel.y =  particle.vel.y + gravity.y
+      if particle.life > 200 then 
+        particle.vel.x = (particle.vel.x + gravity.x) * .99     
+        particle.vel.y =  particle.vel.y + gravity.y/3
       else 
         particle.vel.x = particle.vel.x * .7 
-        particle.vel.y = particle.vel.y * .7 + gravity.y
+        particle.vel.y = particle.vel.y * .7 + gravity.y/3
       end
       
       -- update position
