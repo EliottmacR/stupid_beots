@@ -3,41 +3,6 @@ require("random_functions")
 require("sugarcoat/sugarcoat")
 sugar.utility.using_package(sugar.S, true)
 
--- if CASTLE_PREFETCH then
-  -- CASTLE_PREFETCH({
-    -- 'background.lua',
-    -- 'game.lua',
-    -- 'loving.lua',
-    
-    -- 'assets/Fipps-Regular.otf',
-    
-    -- 'assets/menu_back.png',
-    -- 'assets/transition.png',
-    
-    -- "assets/sound/blaze.wav",
-    -- "assets/sound/blaze-theme.wav",
-    -- "assets/sound/card.wav",
-    -- "assets/sound/joker.wav",
-    -- "assets/sound/mirror.wav",
-    -- "assets/sound/select.wav",
-    
-    -- "assets/cards/1.png",
-    -- "assets/cards/2.png",
-    -- "assets/cards/3.png",
-    -- "assets/cards/4.png",
-    -- "assets/cards/5.png",
-    -- "assets/cards/6.png",
-    -- "assets/cards/7.png",
-    -- "assets/cards/8.png",
-    -- "assets/cards/9.png",
-    -- "assets/cards/10.png",
-    -- "assets/cards/blaze.png",
-    -- "assets/cards/joker.png",
-    -- "assets/cards/mirror.png",
-    -- "assets/cards/card_back.png",
-    -- "assets/cards/card_back_light.png"
-    
--- })
 if CASTLE_PREFETCH then
   CASTLE_PREFETCH({
     "assets/background.wav",
@@ -71,9 +36,7 @@ if CASTLE_PREFETCH then
     
     "game.lua",
     "main.lua",
-    "random_functions.lua",
-    
-    
+    "random_functions.lua"
     
 })
 
