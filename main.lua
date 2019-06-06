@@ -39,7 +39,7 @@ if CASTLE_PREFETCH then
     "random_functions.lua"
     
 })
-
+end
 
 GW = 1000
 GH = 600
